@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Serviço principal da aplicação FastAPI
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Volume para desenvolvimento com live-reload
+      - ./app:/app
+    environment:
+      - ENV=development
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Serviço Caddy para proxy reverso e SSL
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=bot.nexr.me
+    depends_on:
+      - web
+    restart: unless-stopped
+
+# Volumes nomeados para persistência
+volumes:
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+
+# Rede customizada (opcional)
+networks:
+  default:
+    driver: bridge

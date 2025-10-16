@@ -1,0 +1,69 @@
+# Configuração do Caddy para bot.nexr.me
+bot.nexr.me {
+    # Proxy reverso para a aplicação FastAPI
+    reverse_proxy web:8000
+
+    # Headers de segurança
+    header {
+        # CORS headers para permitir uso do widget em outros domínios
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        
+        # Headers de segurança
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        
+        # Remove header do servidor
+        -Server
+    }
+
+    # Log personalizado
+    log {
+        output file /var/log/caddy/bot.nexr.me.log {
+            roll_size 100mb
+            roll_keep 5
+            roll_keep_for 720h
+        }
+        format json
+        level INFO
+    }
+
+    # Compressão automática
+    encode gzip zstd
+
+    # Cache para arquivos estáticos
+    @static {
+        path *.js *.css *.svg *.png *.jpg *.jpeg *.gif *.ico *.woff *.woff2
+    }
+    header @static {
+        Cache-Control "public, max-age=31536000"
+    }
+
+    # Rate limiting para proteção
+    rate_limit {
+        zone dynamic {
+            key {remote_host}
+            events 100
+            window 1m
+        }
+    }
+}
+
+# Configuração para desenvolvimento local (opcional)
+:8080 {
+    reverse_proxy web:8000
+    
+    header {
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+    }
+}
+
+# Redirect HTTP para HTTPS em produção
+http://bot.nexr.me {
+    redir https://bot.nexr.me{uri} permanent
+}
