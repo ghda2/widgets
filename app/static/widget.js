@@ -18,6 +18,14 @@
                 const temp = document.createElement('div');
                 temp.innerHTML = html;
                 
+                // Extrai e adiciona o style do head primeiro
+                const styleContent = temp.querySelector('style');
+                if (styleContent) {
+                    const newStyle = styleContent.cloneNode(true);
+                    document.head.appendChild(newStyle);
+                    console.log('CSS adicionado ao head');
+                }
+                
                 // Extrai apenas o conteúdo do body e script
                 const bodyContent = temp.querySelector('body');
                 if (bodyContent) {
@@ -25,28 +33,27 @@
                     const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
                     console.log('Elementos encontrados:', elements.length);
                     elements.forEach(el => {
-                        console.log('Adicionando elemento:', el.id || el.className);
-                        document.body.appendChild(el.cloneNode(true));
+                        const cloned = el.cloneNode(true);
+                        console.log('Adicionando elemento:', cloned.id || cloned.className);
+                        document.body.appendChild(cloned);
                     });
                     
-                    // Extrai e executa o script, injetando o baseUrl
-                    const scripts = bodyContent.querySelectorAll('script');
-                    scripts.forEach(script => {
-                        const newScript = document.createElement('script');
-                        if (script.src) {
-                            newScript.src = script.src;
-                        } else {
-                            // Injeta a variável baseUrl no script
-                            newScript.textContent = `window.NEXR_WIDGET_BASE_URL = '${baseUrl}';\n` + script.textContent;
-                        }
-                        document.body.appendChild(newScript);
-                    });
-                    
-                    // Extrai e adiciona o style do head
-                    const styleContent = temp.querySelector('style');
-                    if (styleContent) {
-                        document.head.appendChild(styleContent.cloneNode(true));
-                    }
+                    // Pequeno delay para garantir que o DOM foi atualizado
+                    setTimeout(() => {
+                        // Extrai e executa o script, injetando o baseUrl
+                        const scripts = bodyContent.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const newScript = document.createElement('script');
+                            if (script.src) {
+                                newScript.src = script.src;
+                            } else {
+                                // Injeta a variável baseUrl no script
+                                newScript.textContent = `window.NEXR_WIDGET_BASE_URL = '${baseUrl}';\n` + script.textContent;
+                            }
+                            document.body.appendChild(newScript);
+                        });
+                        console.log('Scripts executados');
+                    }, 100);
                 }
                 
                 console.log('Chat widget loaded successfully');
