@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Widget - Nexr</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            min-height: 100vh;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #ff6b6b;
+            margin-top: 0;
+        }
+        .info {
+            background: #fff5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>🚀 Nexr - Página de Teste</h1>
+        <p>Esta página demonstra o widget de chat personalizado para a <strong>Nexr</strong>.</p>
+        
+        <div class="info">
+            <h3>Sobre este teste:</h3>
+            <ul>
+                <li>✅ Widget com <code>clientId="nexr"</code></li>
+                <li>✅ Estilos personalizados de <code>/clients/nexr/styles.css</code></li>
+                <li>✅ Instruções de IA de <code>/clients/nexr/instructions.md</code></li>
+                <li>✅ Comportamento e aparência únicos para este cliente</li>
+            </ul>
+        </div>
+
+        <h2>Teste o Widget</h2>
+        <p>Clique no botão flutuante no canto inferior direito para abrir o chat.</p>
+        <p>O assistente de IA responderá com base nas instruções específicas da Nexr.</p>
+        
+        <div style="height: 1000px; padding: 20px 0;">
+            <h3>Conteúdo de exemplo</h3>
+            <p>Role a página para verificar que o widget permanece fixo na tela.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+
+    <!-- Carrega o widget com clientId da Nexr -->
+    <script 
+        src="/widget.js" 
+        data-client-id="nexr"
+        data-title="Fale com a Nexr"
+        data-primary-color="#ff6b6b"
+    ></script>
+</body>
+</html>

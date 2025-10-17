@@ -1,0 +1,54 @@
+/* Estilos personalizados para a Serinox */
+:root {
+  --primary-color: #2c3e50;
+  --primary-dark: #1a252f;
+  --border-color: #bdc3c7;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --bg-light: #ecf0f1;
+  --shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+  --bg-chat: #ffffff;
+  --text-user: #ffffff;
+  --bg-user: var(--primary-color);
+  --accent-color: #3498db;
+}
+
+/* Personalizações específicas */
+#n-launcher {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  box-shadow: var(--shadow);
+}
+
+#n-window {
+  background: var(--bg-chat);
+  border: 1px solid var(--border-color);
+}
+
+.n-msg.user {
+  background: var(--bg-user);
+  color: var(--text-user);
+  border-radius: 8px 8px 4px 8px;
+}
+
+.n-msg.bot {
+  background: var(--bg-light);
+  color: var(--text-primary);
+  border-radius: 8px 8px 8px 4px;
+  border-left: 3px solid var(--accent-color);
+}
+
+#n-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: #ffffff;
+}
+
+#n-send {
+  background: var(--primary-color);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+#n-send:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}

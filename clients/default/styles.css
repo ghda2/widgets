@@ -1,0 +1,32 @@
+/* Estilos personalizados para o cliente Default */
+:root {
+  --primary-color: #dc3545;
+  --primary-dark: #b02a37;
+  --border-color: #ddd;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --bg-light: #f8f9fa;
+  --shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  --bg-chat: #ffffff;
+  --text-user: #ffffff;
+  --bg-user: var(--primary-color);
+}
+
+/* Personalizações específicas */
+#n-launcher {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+#n-window {
+  background: var(--bg-chat);
+}
+
+.n-msg.user {
+  background: var(--bg-user);
+  color: var(--text-user);
+}
+
+.n-msg.bot {
+  background: var(--bg-light);
+  color: var(--text-primary);
+}

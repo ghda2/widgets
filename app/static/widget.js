@@ -80,11 +80,39 @@
         // Suporte a posição
         mount.setAttribute('data-pos', config.position === 'bottom-left' ? 'bottom-left' : 'bottom-right')
 
-        // Estilos
-        const style = document.createElement('style')
-        style.textContent = createStyles(config.primaryColor)
-        root.appendChild(style)
+        // Carrega estilos personalizados do cliente
+        loadClientStyles(root).then(() => {
+            // Estilos padrão (fallback)
+            const style = document.createElement('style')
+            style.textContent = createStyles(config.primaryColor)
+            root.appendChild(style)
 
+            // Continua com a criação do HTML...
+            createWidgetHTML(root)
+        }).catch(() => {
+            // Fallback se falhar ao carregar estilos
+            const style = document.createElement('style')
+            style.textContent = createStyles(config.primaryColor)
+            root.appendChild(style)
+            createWidgetHTML(root)
+        })
+    }
+
+    async function loadClientStyles(root) {
+        try {
+            const response = await fetch(`${baseUrl}/client/${config.clientId}/styles.css`)
+            if (response.ok) {
+                const cssText = await response.text()
+                const clientStyle = document.createElement('style')
+                clientStyle.textContent = cssText
+                root.appendChild(clientStyle)
+            }
+        } catch (e) {
+            console.warn('[nexr-widget] Failed to load client styles:', e)
+        }
+    }
+
+    function createWidgetHTML(root) {
         // HTML minimal do widget
         const launcher = document.createElement('button')
         launcher.id = 'n-launcher'

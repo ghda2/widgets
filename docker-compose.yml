@@ -10,6 +10,8 @@ services:
     volumes:
       # Volume para desenvolvimento com live-reload
       - ./app:/app
+      # Volume para arquivos de configuração dos clientes
+      - ./clients:/clients
     environment:
       - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
       - ENV=${ENV:-production}

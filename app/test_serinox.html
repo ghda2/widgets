@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Widget - Serinox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .info {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>🏢 Serinox - Página de Teste</h1>
+        <p>Esta página demonstra o widget de chat personalizado para a <strong>Serinox</strong>.</p>
+        
+        <div class="info">
+            <h3>Sobre este teste:</h3>
+            <ul>
+                <li>✅ Widget com <code>clientId="serinox"</code></li>
+                <li>✅ Estilos personalizados de <code>/clients/serinox/styles.css</code></li>
+                <li>✅ Instruções de IA de <code>/clients/serinox/instructions.md</code></li>
+                <li>✅ Comportamento e aparência únicos para este cliente</li>
+            </ul>
+        </div>
+
+        <h2>Teste o Widget</h2>
+        <p>Clique no botão flutuante no canto inferior direito para abrir o chat.</p>
+        <p>O assistente de IA responderá com base nas instruções específicas da Serinox.</p>
+        
+        <div style="height: 1000px; padding: 20px 0;">
+            <h3>Conteúdo de exemplo</h3>
+            <p>Role a página para verificar que o widget permanece fixo na tela.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+
+    <!-- Carrega o widget com clientId da Serinox -->
+    <script 
+        src="/widget.js" 
+        data-client-id="serinox"
+        data-title="Fale com a Serinox"
+        data-primary-color="#667eea"
+    ></script>
+</body>
+</html>

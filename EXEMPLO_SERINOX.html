@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serinox - Soluções em Aço Inox</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #34495e;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .product-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .product-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .product-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .cta {
+            background: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .cta:hover {
+            background: #2980b9;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔩 SERINOX</h1>
+        <p>Soluções Completas em Aço Inox de Alta Qualidade</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#produtos">Produtos</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#certificacoes">Certificações</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+    
+    <div class="hero">
+        <h2>Líder em Distribuição de Aço Inox no Brasil</h2>
+        <p>Atendemos indústrias, construtoras e projetos especiais com produtos certificados e entrega rápida</p>
+        <button class="cta">Solicitar Orçamento</button>
+    </div>
+    
+    <div class="container" id="produtos">
+        <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.5em;">Nossos Produtos</h2>
+        
+        <div class="products">
+            <div class="product-card">
+                <h3>📋 Chapas de Aço Inox</h3>
+                <ul>
+                    <li>AISI 304 e 316</li>
+                    <li>AISI 430</li>
+                    <li>Diversas espessuras</li>
+                    <li>Acabamento espelhado ou escovado</li>
+                    <li>Corte sob medida</li>
+                </ul>
+            </div>
+            
+            <div class="product-card">
+                <h3>⚙️ Tubos e Conexões</h3>
+                <ul>
+                    <li>Tubos com e sem costura</li>
+                    <li>Conexões sanitárias</li>
+                    <li>Conexões rosqueadas</li>
+                    <li>Tubos de precisão</li>
+                    <li>Certificados de qualidade</li>
+                </ul>
+            </div>
+            
+            <div class="product-card">
+                <h3>🔧 Barras e Perfis</h3>
+                <ul>
+                    <li>Barras redondas</li>
+                    <li>Barras quadradas</li>
+                    <li>Barras chatas</li>
+                    <li>Perfis estruturais</li>
+                    <li>Usinagem sob encomenda</li>
+                </ul>
+            </div>
+            
+            <div class="product-card">
+                <h3>🏗️ Projetos Especiais</h3>
+                <ul>
+                    <li>Estruturas metálicas</li>
+                    <li>Guarda-corpos</li>
+                    <li>Corrimãos</li>
+                    <li>Móveis sob medida</li>
+                    <li>Consultoria técnica</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="certificacoes" style="background: #f8f9fa; padding: 60px 20px; margin: 40px 0;">
+        <h2 style="text-align: center; margin-bottom: 30px;">🏆 Certificações e Qualidade</h2>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                A Serinox é certificada pela <strong>ISO 9001</strong> e trabalha exclusivamente com fornecedores 
+                homologados. Todos os nossos produtos acompanham certificados de qualidade e origem, garantindo 
+                total rastreabilidade e conformidade com as normas técnicas brasileiras e internacionais.
+            </p>
+        </div>
+    </div>
+    
+    <div class="container" id="contato">
+        <h2 style="text-align: center; margin-bottom: 40px;">Entre em Contato</h2>
+        <div style="text-align: center;">
+            <p style="font-size: 1.2em; margin-bottom: 20px;">
+                Nossa equipe está pronta para atender você! Utilize o chat ao lado ou entre em contato pelos canais abaixo:
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>(11) 98765-4321</span>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>contato@serinox.com.br</span>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>São Paulo - SP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Serinox - Soluções em Aço Inox. Todos os direitos reservados.</p>
+        <p style="margin-top: 10px; opacity: 0.8;">CNPJ: 12.345.678/0001-90</p>
+    </footer>
+
+    <!-- ✅ WIDGET DE CHAT DA NEXR - CONFIGURAÇÃO SERINOX -->
+    <script 
+        src="https://bot.nexr.me/widget.js" 
+        data-client-id="serinox"
+        data-title="Fale com a Serinox"
+        data-primary-color="#2c3e50"
+        data-position="bottom-right"
+    ></script>
+</body>
+</html>

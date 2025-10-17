@@ -1,29 +1,48 @@
-# Chat Widget Project
+# 🤖 Chat Widget Project - Bot Nexr
 
-Este é um projeto completo para um widget de chat flutuante servido via FastAPI e containerizado com Docker.
+Widget de chat inteligente multi-tenant com IA integrada (Google Gemini), personalização por cliente e deploy containerizado.
 
 ## 🚀 Funcionalidades
 
 - **Widget de Chat Flutuante**: Ícone de chat que aparece no canto inferior direito
-- **Interface Interativa**: Janela de chat com animações suaves
-- **Responsivo**: Funciona em desktop e dispositivos móveis
+- **Multi-Tenant**: Suporte a múltiplos clientes com configurações independentes
+- **IA Personalizada**: Cada cliente tem suas próprias instruções e comportamento da IA
+- **Estilos Customizáveis**: CSS personalizado por cliente via Shadow DOM
+- **Interface Interativa**: Janela de chat com animações suaves e responsiva
 - **Fácil Integração**: Basta adicionar uma linha de script em qualquer site
 - **Containerizado**: Deploy fácil com Docker e Docker Compose
 - **Proxy Reverso**: Configurado com Caddy para SSL automático
+- **Google Gemini**: Respostas inteligentes usando modelo gemini-2.0-flash
 
 ## 📁 Estrutura do Projeto
 
 ```
 chat_widget_project/
 ├── app/
-│   ├── main.py              # Aplicação FastAPI
+│   ├── main.py              # Aplicação FastAPI com endpoints REST
+│   ├── ai_handler.py        # Integração com Google Gemini AI
+│   ├── index.html           # Página principal
+│   ├── test.html            # Página de teste do widget
+│   ├── test_serinox.html    # Página de teste - Serinox
+│   ├── test_nexr.html       # Página de teste - Nexr
 │   └── static/
-│       ├── widget.js        # Script do widget
-│       └── chat-icon.svg    # Ícone do chat
+│       └── widget.js        # Script do widget (Shadow DOM)
+├── clients/                 # Configurações por cliente
+│   ├── default/
+│   │   ├── instructions.md  # Prompt da IA
+│   │   └── styles.css       # Estilos personalizados
+│   ├── serinox/
+│   │   ├── instructions.md
+│   │   └── styles.css
+│   └── nexr/
+│       ├── instructions.md
+│       └── styles.css
 ├── Dockerfile               # Configuração Docker
 ├── docker-compose.yml       # Orquestração dos serviços
-├── Caddyfile               # Configuração do Caddy
+├── Caddyfile               # Configuração do Caddy (proxy reverso)
 ├── requirements.txt        # Dependências Python
+├── INSTRUCOES_CLIENTES.md  # Documentação de integração
+├── EXEMPLO_SERINOX.html    # Exemplo de site com widget
 └── README.md              # Este arquivo
 ```
 
@@ -46,11 +65,34 @@ docker-compose up --build
 
 ### 2. Integração no Site
 
-Para integrar o widget em qualquer site, adicione esta linha no HTML:
+Para integrar o widget em qualquer site, adicione o script no final do `<body>`:
 
+#### Cliente Serinox:
+```html
+<script 
+    src="https://bot.nexr.me/widget.js" 
+    data-client-id="serinox"
+    data-title="Fale com a Serinox"
+    data-primary-color="#2c3e50"
+></script>
+```
+
+#### Cliente Nexr:
+```html
+<script 
+    src="https://bot.nexr.me/widget.js" 
+    data-client-id="nexr"
+    data-title="Fale com a Nexr"
+    data-primary-color="#ff6b6b"
+></script>
+```
+
+#### Cliente Default (padrão):
 ```html
 <script src="https://bot.nexr.me/widget.js"></script>
 ```
+
+Veja o arquivo `INSTRUCOES_CLIENTES.md` para documentação completa.
 
 ### 3. Deploy em Produção
 
@@ -76,25 +118,53 @@ curl https://bot.nexr.me/health
 
 ### Variáveis de Ambiente
 
+- `GOOGLE_AI_API_KEY`: Chave da API do Google Gemini (obrigatória)
 - `ENV`: Ambiente (development/production)
 - `DOMAIN`: Domínio para o Caddy (padrão: bot.nexr.me)
 
-### Personalizações
+### 🎨 Adicionar Novo Cliente
 
-#### Modificar Aparência do Widget
+1. **Criar pasta do cliente:**
+```bash
+mkdir clients/nome-cliente
+```
 
-Edite `app/static/widget.js` na função `createStyles()` para personalizar:
+2. **Criar arquivo de instruções** (`clients/nome-cliente/instructions.md`):
+```markdown
+# Instruções para o Assistente - Nome do Cliente
 
-- Cores do tema
-- Tamanho da janela
-- Posicionamento
-- Animações
+Você é um assistente especializado de [Nome da Empresa]...
 
-#### Modificar Ícone
+## Comportamento:
+- Seja profissional
+- Responda em português brasileiro
+...
+```
 
-Substitua `app/static/chat-icon.svg` por seu próprio ícone SVG.
+3. **Criar estilos personalizados** (`clients/nome-cliente/styles.css`):
+```css
+:root {
+  --primary-color: #seu-azul;
+  --primary-dark: #seu-azul-escuro;
+  /* ... outras variáveis */
+}
+```
 
-#### Adicionar Funcionalidades
+4. **Usar no site:**
+```html
+<script 
+    src="https://bot.nexr.me/widget.js" 
+    data-client-id="nome-cliente"
+></script>
+```
+
+### Personalizações do Widget
+
+#### Via Atributos HTML:
+- `data-client-id`: ID do cliente (default: "default")
+- `data-title`: Título do chat (default: "Fale Conosco")
+- `data-primary-color`: Cor principal (default: "#dc3545")
+- `data-position`: Posição do botão ("bottom-right" ou "bottom-left")
 
 Para adicionar funcionalidades de backend (envio de mensagens, integração com APIs, etc.), modifique:
 
