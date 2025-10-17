@@ -55,15 +55,22 @@ Para integrar o widget em qualquer site, adicione esta linha no HTML:
 ### 3. Deploy em Produção
 
 ```bash
-# Configurar o domínio no Caddyfile
-# Executar em produção
+# 1. Configurar variáveis de ambiente
+cp .env.example .env
+# Edite .env com suas chaves reais
+
+# 2. Executar em produção
 docker-compose up -d
 
-# O Caddy automaticamente:
-# - Obtém certificado SSL via Let's Encrypt
-# - Configura HTTPS
-# - Faz proxy para a aplicação FastAPI
+# 3. Verificar se está funcionando
+curl https://bot.nexr.me/health
 ```
+
+#### Configuração de Produção
+- **Domínio**: Configure `DOMAIN=bot.nexr.me` no `.env`
+- **SSL**: Caddy automaticamente obtém certificado Let's Encrypt
+- **API Key**: Configure `GOOGLE_AI_API_KEY` no `.env`
+- **Logs**: Verifique `/var/log/caddy/bot.nexr.me.log` no container Caddy
 
 ## 🔧 Configuração
 

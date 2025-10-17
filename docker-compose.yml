@@ -11,7 +11,8 @@ services:
       # Volume para desenvolvimento com live-reload
       - ./app:/app
     environment:
-      - ENV=development
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - ENV=${ENV:-production}
       - PYTHONPATH=/app
     restart: unless-stopped
     healthcheck:

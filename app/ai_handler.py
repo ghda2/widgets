@@ -2,7 +2,7 @@ import google.generativeai as genai
 import os
 
 # Configure a chave da API (em produção, use variável de ambiente)
-API_KEY = "AIzaSyBTvQNSV_XWyNCKIk6Ai5MIekedbrgxpYc"  # Substitua por env var em produção
+API_KEY = os.getenv("GOOGLE_AI_API_KEY", "AIzaSyBTvQNSV_XWyNCKIk6Ai5MIekedbrgxpYc")  # Fallback para desenvolvimento
 genai.configure(api_key=API_KEY)
 
 # Modelo a usar (Gemini 2.0 Flash é rápido e gratuito)
