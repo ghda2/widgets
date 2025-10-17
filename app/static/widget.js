@@ -29,12 +29,14 @@
                 // Extrai apenas o conteúdo do body e script
                 const bodyContent = temp.querySelector('body');
                 if (bodyContent) {
-                    // Adiciona os elementos HTML ao documento
-                    const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
+                    // Adiciona os elementos HTML ao documento (ignorando comentários e scripts)
+                    const elements = Array.from(bodyContent.childNodes).filter(node => 
+                        node.nodeType === 1 && node.tagName.toLowerCase() !== 'script'
+                    );
                     console.log('Elementos encontrados:', elements.length);
                     elements.forEach(el => {
                         const cloned = el.cloneNode(true);
-                        console.log('Adicionando elemento:', cloned.id || cloned.className);
+                        console.log('Adicionando elemento:', cloned.id || cloned.className || cloned.tagName);
                         document.body.appendChild(cloned);
                     });
                     
