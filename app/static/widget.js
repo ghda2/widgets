@@ -23,16 +23,27 @@
                 if (bodyContent) {
                     // Adiciona os elementos HTML ao documento
                     const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
-                    elements.forEach(el => document.body.appendChild(el.cloneNode(true)));
+                    elements.forEach(el => {
+                        const clonedEl = el.cloneNode(true);
+                        
+                        // Corrige URLs de imagens para usar baseUrl
+                        const imgs = clonedEl.querySelectorAll('img[src^="/"]');
+                        imgs.forEach(img => {
+                            img.src = baseUrl + img.getAttribute('src');
+                        });
+                        
+                        document.body.appendChild(clonedEl);
+                    });
                     
-                    // Extrai e executa o script
+                    // Extrai e executa o script, injetando o baseUrl
                     const scripts = bodyContent.querySelectorAll('script');
                     scripts.forEach(script => {
                         const newScript = document.createElement('script');
                         if (script.src) {
                             newScript.src = script.src;
                         } else {
-                            newScript.textContent = script.textContent;
+                            // Injeta a variável baseUrl no script
+                            newScript.textContent = `window.NEXR_WIDGET_BASE_URL = '${baseUrl}';\n` + script.textContent;
                         }
                         document.body.appendChild(newScript);
                     });
