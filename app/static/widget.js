@@ -60,10 +60,10 @@
                 right: 20px;
                 width: 60px;
                 height: 60px;
-                background: linear-gradient(135deg, #007bff, #0056b3);
+                background: linear-gradient(135deg, #dc3545, #b02a37);
                 border-radius: 50%;
                 cursor: pointer;
-                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+                box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -75,7 +75,7 @@
 
             #nexr-chat-launcher:hover {
                 transform: scale(1.1);
-                box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+                box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
             }
 
             #nexr-chat-launcher img {
@@ -109,7 +109,7 @@
             }
 
             .nexr-chat-header {
-                background: linear-gradient(135deg, #007bff, #0056b3);
+                background: linear-gradient(135deg, #dc3545, #b02a37);
                 color: white;
                 padding: 16px 20px;
                 display: flex;
@@ -158,7 +158,7 @@
                 padding: 16px;
                 border-radius: 8px;
                 margin-bottom: 16px;
-                border-left: 4px solid #007bff;
+                border-left: 4px solid #dc3545;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
@@ -206,7 +206,7 @@
             }
 
             .nexr-chat-input:focus {
-                border-color: #007bff;
+                border-color: #dc3545;
             }
 
             .nexr-chat-input::placeholder {
