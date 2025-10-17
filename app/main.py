@@ -54,6 +54,21 @@ async def get_widget_js():
         )
     return Response("Widget não encontrado", status_code=404)
 
+@app.get("/widget-html")
+async def get_widget_html():
+    """Serve o HTML do widget (sem a estrutura completa do documento)"""
+    file_path = "index.html"
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+        
+        return Response(
+            html_content,
+            media_type="text/html",
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
+    return Response("Widget HTML não encontrado", status_code=404)
+
 @app.get("/chat-icon.svg")
 async def get_chat_icon():
     """Serve o arquivo chat-icon.svg"""

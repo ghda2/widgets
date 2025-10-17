@@ -4,31 +4,455 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Widget de Chat</title>
+    <style>
+        :root {
+            --primary-color: #dc3545;
+            --primary-dark: #b02a37;
+            --border-color: #ddd;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --bg-light: #f8f9fa;
+            --shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Chat Launcher Button */
+        #nexr-chat-launcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        #nexr-chat-launcher:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+        }
+
+        #nexr-chat-launcher:active {
+            transform: scale(0.95);
+        }
+
+        #nexr-chat-launcher img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        #nexr-chat-launcher .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        #nexr-chat-launcher .chat-badge.show {
+            display: flex;
+        }
+
+        /* Chat Window */
+        #nexr-chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            z-index: 1000000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #nexr-chat-window.chat-aberto {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Chat Header */
+        .nexr-chat-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nexr-chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .nexr-chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            line-height: 1;
+        }
+
+        .nexr-chat-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Chat Body */
+        .nexr-chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nexr-chat-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nexr-chat-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .nexr-chat-body::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        .nexr-chat-body::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        .nexr-welcome-message {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nexr-welcome-message h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nexr-welcome-message p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .nexr-chat-message {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .nexr-chat-message.user {
+            background: var(--primary-color);
+            color: white;
+            margin-left: 40px;
+            text-align: right;
+        }
+
+        .nexr-chat-message.bot {
+            margin-right: 40px;
+            color: var(--text-primary);
+        }
+
+        /* Chat Footer */
+        .nexr-chat-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            background: white;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nexr-chat-input {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .nexr-chat-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .nexr-chat-input::placeholder {
+            color: #999;
+        }
+
+        .nexr-chat-send {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-weight: 500;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .nexr-chat-send:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+        .nexr-chat-send:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .nexr-chat-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            #nexr-chat-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 140px);
+                bottom: 90px;
+            }
+
+            #nexr-chat-launcher {
+                bottom: 16px;
+                right: 16px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            #nexr-chat-window {
+                height: 70vh;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Widget Script -->
-    <script src="/widget.js"></script>
+    <!-- Chat Launcher Button -->
+    <button 
+        id="nexr-chat-launcher" 
+        aria-label="Abrir chat de suporte"
+        aria-expanded="false"
+        aria-controls="nexr-chat-window"
+    >
+        <img src="/chat-icon.svg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='💬';">
+        <span class="chat-badge" aria-label="Nova mensagem">1</span>
+    </button>
 
-    <!-- Chat Widget HTML Structure -->
-    <div id="nexr-chat-launcher">
-        <img src="/chat-icon.svg" alt="Chat" onerror="this.style.display='none'; this.parentElement.innerHTML='💬'; this.parentElement.style.fontSize='24px'; this.parentElement.style.color='white';">
-    </div>
-
-    <div id="nexr-chat-window">
+    <!-- Chat Window -->
+    <div id="nexr-chat-window" role="dialog" aria-labelledby="chat-title" aria-modal="true">
         <div class="nexr-chat-header">
-            <h3>Fale Conosco</h3>
-            <button class="nexr-chat-close" aria-label="Fechar chat">×</button>
+            <h3 id="chat-title">Fale Conosco</h3>
+            <button 
+                class="nexr-chat-close" 
+                aria-label="Fechar chat"
+                type="button"
+            >×</button>
         </div>
+        
         <div class="nexr-chat-body">
             <div class="nexr-welcome-message">
                 <h4>👋 Bem-vindo!</h4>
                 <p>Olá! Como podemos ajudá-lo hoje? Digite sua mensagem abaixo e entraremos em contato.</p>
             </div>
         </div>
+        
         <div class="nexr-chat-footer">
-            <input type="text" class="nexr-chat-input" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem">
-            <button class="nexr-chat-send" disabled>Enviar</button>
+            <input 
+                type="text" 
+                class="nexr-chat-input" 
+                placeholder="Digite sua mensagem..." 
+                aria-label="Digite sua mensagem"
+            >
+            <button 
+                class="nexr-chat-send" 
+                disabled
+                type="button"
+            >Enviar</button>
         </div>
     </div>
+
+    <script>
+        // Chat Widget Controller
+        class ChatWidget {
+            constructor() {
+                this.launcher = document.getElementById('nexr-chat-launcher');
+                this.chatWindow = document.getElementById('nexr-chat-window');
+                this.closeBtn = document.querySelector('.nexr-chat-close');
+                this.input = document.querySelector('.nexr-chat-input');
+                this.sendBtn = document.querySelector('.nexr-chat-send');
+                this.chatBody = document.querySelector('.nexr-chat-body');
+                this.badge = document.querySelector('.chat-badge');
+                this.isOpen = false;
+                this.messages = [];
+
+                this.init();
+            }
+
+            init() {
+                // Event listeners
+                this.launcher.addEventListener('click', () => this.toggleChat());
+                this.closeBtn.addEventListener('click', () => this.closeChat());
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                this.input.addEventListener('input', () => this.updateSendButtonState());
+
+                // Close chat when clicking outside (opcional)
+                document.addEventListener('click', (e) => {
+                    if (!this.chatWindow.contains(e.target) && !this.launcher.contains(e.target)) {
+                        if (this.isOpen) {
+                            this.closeChat();
+                        }
+                    }
+                });
+
+                // Keyboard: ESC para fechar
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isOpen) {
+                        this.closeChat();
+                    }
+                });
+
+                this.updateSendButtonState();
+            }
+
+            toggleChat() {
+                if (this.isOpen) {
+                    this.closeChat();
+                } else {
+                    this.openChat();
+                }
+            }
+
+            openChat() {
+                this.isOpen = true;
+                this.chatWindow.classList.add('chat-aberto');
+                this.launcher.setAttribute('aria-expanded', 'true');
+                this.input.focus();
+                this.badge.classList.remove('show');
+            }
+
+            closeChat() {
+                this.isOpen = false;
+                this.chatWindow.classList.remove('chat-aberto');
+                this.launcher.setAttribute('aria-expanded', 'false');
+            }
+
+            sendMessage() {
+                const text = this.input.value.trim();
+                
+                if (!text) return;
+
+                // Adiciona mensagem do usuário
+                this.addMessage(text, 'user');
+                this.input.value = '';
+                this.updateSendButtonState();
+
+                // Scroll para o final
+                setTimeout(() => this.scrollToBottom(), 100);
+
+                // Simula resposta do bot
+                setTimeout(() => {
+                    this.addMessage('Obrigado por sua mensagem! Um agente entrará em contato em breve.', 'bot');
+                    this.scrollToBottom();
+                }, 1000);
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `nexr-chat-message ${sender}`;
+                messageDiv.textContent = text;
+                this.chatBody.appendChild(messageDiv);
+                this.messages.push({ text, sender, timestamp: new Date() });
+            }
+
+            scrollToBottom() {
+                this.chatBody.scrollTop = this.chatBody.scrollHeight;
+            }
+
+            updateSendButtonState() {
+                const hasText = this.input.value.trim().length > 0;
+                this.sendBtn.disabled = !hasText;
+            }
+        }
+
+        // Inicializa o widget quando o DOM está pronto
+        document.addEventListener('DOMContentLoaded', () => {
+            new ChatWidget();
+        });
+    </script>
 </body>
 </html>
