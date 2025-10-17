@@ -1,9 +1,19 @@
 from fastapi import FastAPI, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
 app = FastAPI()
+
+# Adicionar middleware CORS para permitir conexões de qualquer domínio
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Montar arquivos estáticos
 app.mount("/static", StaticFiles(directory="static"), name="static")
