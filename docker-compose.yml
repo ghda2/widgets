@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   # Serviço principal da aplicação FastAPI
   web:
     build: 
       context: .
       dockerfile: Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8001:8000"
     volumes:
