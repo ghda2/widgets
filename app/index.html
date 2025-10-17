@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração do Widget de Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+            color: #666;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
+        .code {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Widget de Chat - Demonstração</h1>
+        <p>Este é um exemplo de como integrar o widget de chat em seu site. O widget aparece como um botão flutuante no canto inferior direito.</p>
+
+        <div class="demo-section">
+            <h2>Como usar:</h2>
+            <p>Adicione o seguinte código ao final da tag <code>&lt;body&gt;</code> do seu HTML:</p>
+            <div class="code">
+&lt;script src="http://localhost:8001/widget.js"&gt;&lt;/script&gt;
+            </div>
+            <p>Para produção, use o domínio do seu servidor:</p>
+            <div class="code">
+&lt;script src="https://bot.nexr.me/widget.js"&gt;&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Funcionalidades:</h2>
+            <ul>
+                <li>Botão flutuante para abrir/fechar o chat</li>
+                <li>Interface responsiva</li>
+                <li>Envio de mensagens para o servidor</li>
+                <li>Feedback visual durante o envio</li>
+                <li>Suporte a teclado (Enter para enviar, ESC para fechar)</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>Teste o Widget:</h2>
+            <p>Clique no botão azul no canto inferior direito para abrir o chat e testar o envio de mensagens.</p>
+        </div>
+    </div>
+
+    <!-- Widget Script -->
+    <script src="/widget.js"></script>
+</body>
+</html>

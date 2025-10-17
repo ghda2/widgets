@@ -20,6 +20,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def root():
+    """Serve a página de demonstração do widget"""
+    file_path = "index.html"
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type="text/html")
     return {"message": "Chat Widget API está funcionando!"}
 
 @app.post("/send-message")
