@@ -41,15 +41,6 @@ bot.nexr.me {
     header @static {
         Cache-Control "public, max-age=31536000"
     }
-
-    # Rate limiting para proteção
-    rate_limit {
-        zone dynamic {
-            key {remote_host}
-            events 100
-            window 1m
-        }
-    }
 }
 
 # Configuração para desenvolvimento local (opcional)
