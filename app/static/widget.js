@@ -24,15 +24,7 @@
                     // Adiciona os elementos HTML ao documento
                     const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
                     elements.forEach(el => {
-                        const clonedEl = el.cloneNode(true);
-                        
-                        // Corrige URLs de imagens para usar baseUrl
-                        const imgs = clonedEl.querySelectorAll('img[src^="/"]');
-                        imgs.forEach(img => {
-                            img.src = baseUrl + img.getAttribute('src');
-                        });
-                        
-                        document.body.appendChild(clonedEl);
+                        document.body.appendChild(el.cloneNode(true));
                     });
                     
                     // Extrai e executa o script, injetando o baseUrl

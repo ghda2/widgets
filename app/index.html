@@ -53,10 +53,10 @@
             transform: scale(0.95);
         }
 
-        #nexr-chat-launcher img {
-            width: 28px;
-            height: 28px;
-            filter: brightness(0) invert(1);
+        #nexr-chat-launcher span:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #nexr-chat-launcher .chat-badge {
@@ -302,7 +302,7 @@
         aria-expanded="false"
         aria-controls="nexr-chat-window"
     >
-        <img src="/chat-icon.svg" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:28px\'>💬</span>';">
+        <span style="font-size: 28px;">💬</span>
         <span class="chat-badge" aria-label="Nova mensagem">1</span>
     </button>
 
