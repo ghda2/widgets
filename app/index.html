@@ -78,5 +78,27 @@
 
     <!-- Widget Script -->
     <script src="/widget.js"></script>
+
+    <!-- Chat Widget HTML Structure -->
+    <div id="nexr-chat-launcher">
+        <img src="/chat-icon.svg" alt="Chat" onerror="this.style.display='none'; this.parentElement.innerHTML='💬'; this.parentElement.style.fontSize='24px'; this.parentElement.style.color='white';">
+    </div>
+
+    <div id="nexr-chat-window">
+        <div class="nexr-chat-header">
+            <h3>Fale Conosco</h3>
+            <button class="nexr-chat-close" aria-label="Fechar chat">×</button>
+        </div>
+        <div class="nexr-chat-body">
+            <div class="nexr-welcome-message">
+                <h4>👋 Bem-vindo!</h4>
+                <p>Olá! Como podemos ajudá-lo hoje? Digite sua mensagem abaixo e entraremos em contato.</p>
+            </div>
+        </div>
+        <div class="nexr-chat-footer">
+            <input type="text" class="nexr-chat-input" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem">
+            <button class="nexr-chat-send" disabled>Enviar</button>
+        </div>
+    </div>
 </body>
 </html>

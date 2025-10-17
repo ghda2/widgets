@@ -26,12 +26,19 @@
         // Cria e injeta os estilos CSS
         createStyles();
 
-        // Cria o botão launcher
-        createLauncher(baseUrl);
-        console.log('Launcher criado.');
+        // Cria o botão launcher se não existir
+        if (!document.getElementById('nexr-chat-launcher')) {
+            createLauncher(baseUrl);
+            console.log('Launcher criado.');
+        }
 
-        // Cria a janela do chat
-        createChatWindow();
+        // Cria a janela do chat se não existir
+        if (!document.getElementById('nexr-chat-window')) {
+            createChatWindow();
+        } else {
+            // Se já existe, configura os event listeners
+            setupChatWindow();
+        }
 
         // Adiciona event listeners
         addEventListeners();
@@ -261,6 +268,78 @@
         console.log('Launcher criado e adicionado ao DOM.');
     }
 
+    function setupChatWindow() {
+        const chatWindow = document.getElementById('nexr-chat-window');
+        const input = chatWindow.querySelector('.nexr-chat-input');
+        const sendButton = chatWindow.querySelector('.nexr-chat-send');
+        const body = chatWindow.querySelector('.nexr-chat-body');
+
+        // Event listener para habilitar/desabilitar botão enviar
+        input.addEventListener('input', function() {
+            sendButton.disabled = this.value.trim() === '';
+        });
+
+        // Event listener para envio via Enter
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !sendButton.disabled) {
+                handleSendMessage(input, sendButton, body);
+            }
+        });
+
+        // Event listener para botão enviar
+        sendButton.addEventListener('click', function() {
+            handleSendMessage(input, sendButton, body);
+        });
+
+        function handleSendMessage(input, sendButton, body) {
+            const message = input.value.trim();
+            if (message) {
+                // Envia a mensagem para o servidor
+                fetch(baseUrl + '/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Mensagem enviada com sucesso:', message);
+                        // Adiciona a mensagem ao chat
+                        addMessageToChat(body, 'Você', message);
+                    } else {
+                        console.error('Erro ao enviar mensagem:', data.message);
+                        alert('Erro ao enviar mensagem: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Erro ao conectar com o servidor.');
+                });
+                
+                // Limpa o input
+                input.value = '';
+                sendButton.disabled = true;
+                
+                // Feedback visual
+                const originalText = sendButton.textContent;
+                sendButton.textContent = 'Enviando...';
+                setTimeout(() => {
+                    sendButton.textContent = originalText;
+                }, 1000);
+            }
+        }
+    }
+
+    function addMessageToChat(body, sender, message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'nexr-chat-message';
+        messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        body.appendChild(messageDiv);
+        body.scrollTop = body.scrollHeight;
+    }
+
     function createChatWindow() {
         const chatWindow = document.createElement('div');
         chatWindow.id = 'nexr-chat-window';
@@ -321,69 +400,6 @@
         chatWindow.appendChild(footer);
         
         document.body.appendChild(chatWindow);
-        
-        // Event listener para habilitar/desabilitar botão enviar
-        input.addEventListener('input', function() {
-            sendButton.disabled = this.value.trim() === '';
-        });
-        
-        // Event listener para envio via Enter
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !sendButton.disabled) {
-                handleSendMessage();
-            }
-        });
-        
-        // Event listener para botão enviar
-        sendButton.addEventListener('click', handleSendMessage);
-        
-        function handleSendMessage() {
-            const message = input.value.trim();
-            if (message) {
-                // Envia a mensagem para o servidor
-                fetch(baseUrl + '/send-message', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: message }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log('Mensagem enviada com sucesso:', message);
-                        // Adiciona a mensagem ao chat
-                        addMessageToChat('Você', message);
-                    } else {
-                        console.error('Erro ao enviar mensagem:', data.message);
-                        alert('Erro ao enviar mensagem: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro na requisição:', error);
-                    alert('Erro ao conectar com o servidor.');
-                });
-                
-                // Limpa o input
-                input.value = '';
-                sendButton.disabled = true;
-                
-                // Feedback visual
-                const originalText = sendButton.textContent;
-                sendButton.textContent = 'Enviando...';
-                setTimeout(() => {
-                    sendButton.textContent = originalText;
-                }, 1000);
-            }
-        }
-
-        function addMessageToChat(sender, message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'nexr-chat-message';
-            messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
-            body.appendChild(messageDiv);
-            body.scrollTop = body.scrollHeight;
-        }
     }
 
     function addEventListeners() {
