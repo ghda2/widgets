@@ -66,6 +66,18 @@ async def get_chat_icon():
         )
     return Response("Ícone não encontrado", status_code=404)
 
+@app.get("/widget.css")
+async def get_widget_css():
+    """Serve o arquivo widget.css"""
+    file_path = os.path.join("static", "widget.css")
+    if os.path.exists(file_path):
+        return FileResponse(
+            file_path, 
+            media_type="text/css",
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
+    return Response("CSS não encontrado", status_code=404)
+
 @app.get("/health")
 async def health_check():
     """Endpoint para verificação de saúde"""
