@@ -43,17 +43,6 @@ bot.nexr.me {
     }
 }
 
-# Configuração para desenvolvimento local (opcional)
-:8080 {
-    reverse_proxy web:8000
-    
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET, POST, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-    }
-}
-
 # Redirect HTTP para HTTPS em produção
 http://bot.nexr.me {
     redir https://bot.nexr.me{uri} permanent
