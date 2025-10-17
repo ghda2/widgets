@@ -26,6 +26,14 @@ async def root():
         return FileResponse(file_path, media_type="text/html")
     return {"message": "Chat Widget API está funcionando!"}
 
+@app.get("/test")
+async def test_page():
+    """Serve a página de teste do widget"""
+    file_path = "test.html"
+    if os.path.exists(file_path):
+        return FileResponse(file_path, media_type="text/html")
+    return Response("Página de teste não encontrada", status_code=404)
+
 @app.post("/send-message")
 async def send_message(request: Request):
     """Endpoint para receber mensagens do chat"""

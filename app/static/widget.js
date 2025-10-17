@@ -23,7 +23,9 @@
                 if (bodyContent) {
                     // Adiciona os elementos HTML ao documento
                     const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
+                    console.log('Elementos encontrados:', elements.length);
                     elements.forEach(el => {
+                        console.log('Adicionando elemento:', el.id || el.className);
                         document.body.appendChild(el.cloneNode(true));
                     });
                     
