@@ -19,7 +19,7 @@
 
         // Detecta o domínio base do script
         const currentScript = document.currentScript || document.querySelector('script[src*="widget.js"]');
-        const scriptSrc = currentScript ? currentScript.src : '//bot.nexr.me/widget.js';
+        const scriptSrc = currentScript ? currentScript.src : '//localhost:8001/widget.js';
         baseUrl = scriptSrc.replace('/widget.js', '');
         console.log('Base URL detectado:', baseUrl);
 
