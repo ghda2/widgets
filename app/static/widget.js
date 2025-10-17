@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    let baseUrl = '';
+
     // Aguarda o DOM estar carregado
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initChatWidget);
@@ -18,7 +20,7 @@
         // Detecta o domínio base do script
         const currentScript = document.currentScript || document.querySelector('script[src*="widget.js"]');
         const scriptSrc = currentScript ? currentScript.src : '//bot.nexr.me/widget.js';
-        const baseUrl = scriptSrc.replace('/widget.js', '');
+        baseUrl = scriptSrc.replace('/widget.js', '');
         console.log('Base URL detectado:', baseUrl);
 
         // Cria e injeta os estilos CSS
@@ -163,6 +165,16 @@
             .nexr-welcome-message p {
                 margin: 0;
                 color: #666;
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .nexr-chat-message {
+                background: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
                 font-size: 14px;
                 line-height: 1.4;
             }
@@ -328,20 +340,49 @@
         function handleSendMessage() {
             const message = input.value.trim();
             if (message) {
-                // Aqui você pode adicionar a lógica de envio da mensagem
-                console.log('Mensagem enviada:', message);
+                // Envia a mensagem para o servidor
+                fetch(baseUrl + '/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Mensagem enviada com sucesso:', message);
+                        // Adiciona a mensagem ao chat
+                        addMessageToChat('Você', message);
+                    } else {
+                        console.error('Erro ao enviar mensagem:', data.message);
+                        alert('Erro ao enviar mensagem: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Erro ao conectar com o servidor.');
+                });
                 
                 // Limpa o input
                 input.value = '';
                 sendButton.disabled = true;
                 
-                // Feedback visual (opcional)
+                // Feedback visual
                 const originalText = sendButton.textContent;
-                sendButton.textContent = 'Enviado!';
+                sendButton.textContent = 'Enviando...';
                 setTimeout(() => {
                     sendButton.textContent = originalText;
                 }, 1000);
             }
+        }
+
+        function addMessageToChat(sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'nexr-chat-message';
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            body.appendChild(messageDiv);
+            body.scrollTop = body.scrollHeight;
         }
     }
 

@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -21,6 +21,22 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 async def root():
     return {"message": "Chat Widget API está funcionando!"}
+
+@app.post("/send-message")
+async def send_message(request: Request):
+    """Endpoint para receber mensagens do chat"""
+    try:
+        data = await request.json()
+        message = data.get("message", "")
+        if message:
+            # Aqui você pode processar a mensagem (salvar em banco, enviar email, etc.)
+            print(f"Mensagem recebida: {message}")
+            return JSONResponse({"status": "success", "message": "Mensagem enviada com sucesso!"})
+        else:
+            return JSONResponse({"status": "error", "message": "Mensagem vazia"}, status_code=400)
+    except Exception as e:
+        print(f"Erro ao processar mensagem: {e}")
+        return JSONResponse({"status": "error", "message": "Erro interno"}, status_code=500)
 
 @app.get("/widget.js")
 async def get_widget_js():
