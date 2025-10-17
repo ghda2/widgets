@@ -9,6 +9,7 @@
     }
 
     function initChatWidget() {
+        console.log('Inicializando widget de chat...');
         // Verifica se o widget já foi inicializado
         if (document.getElementById('nexr-chat-widget')) {
             return;
@@ -16,14 +17,16 @@
 
         // Detecta o domínio base do script
         const currentScript = document.currentScript || document.querySelector('script[src*="widget.js"]');
-        const scriptSrc = currentScript ? currentScript.src : 'https://bot.nexr.me/widget.js';
+        const scriptSrc = currentScript ? currentScript.src : '//bot.nexr.me/widget.js';
         const baseUrl = scriptSrc.replace('/widget.js', '');
+        console.log('Base URL detectado:', baseUrl);
 
         // Cria e injeta os estilos CSS
         createStyles();
 
         // Cria o botão launcher
         createLauncher(baseUrl);
+        console.log('Launcher criado.');
 
         // Cria a janela do chat
         createChatWindow();
@@ -55,7 +58,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                z-index: 10000;
+                z-index: 999999;
                 transition: all 0.3s ease;
                 border: none;
                 outline: none;
@@ -81,7 +84,7 @@
                 background: white;
                 border-radius: 12px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-                z-index: 10001;
+                z-index: 1000000;
                 display: none;
                 opacity: 0;
                 transform: translateY(20px) scale(0.95);
@@ -243,6 +246,7 @@
         
         launcher.appendChild(icon);
         document.body.appendChild(launcher);
+        console.log('Launcher criado e adicionado ao DOM.');
     }
 
     function createChatWindow() {
