@@ -58,15 +58,16 @@ async def send_message(request: Request):
         message = data.get("message", "").strip()
         page = data.get("page")
         user_agent = data.get("userAgent")
+        client_id = data.get("clientId", "default")  # ID do cliente para personalização
         if not message:
             return JSONResponse({"status": "error", "message": "Mensagem vazia"}, status_code=400)
 
         # Aqui você pode integrar com seu backend (DB, email, webhook, etc.)
-        print(f"[widget] Mensagem: {message} | page={page}")
+        print(f"[widget] Cliente: {client_id} | Mensagem: {message} | page={page}")
 
-        # Gera resposta com IA
+        # Gera resposta com IA personalizada por cliente
         context = {"page": page, "userAgent": user_agent}
-        ai_reply = generate_ai_response(message, context)
+        ai_reply = generate_ai_response(message, context, client_id)
 
         return JSONResponse({
             "status": "success",

@@ -18,6 +18,7 @@
         position: (currentScript && currentScript.dataset.position) || 'bottom-right',
         primaryColor: (currentScript && currentScript.dataset.primaryColor) || '#dc3545',
         title: (currentScript && currentScript.dataset.title) || 'Fale Conosco',
+        clientId: (currentScript && currentScript.dataset.clientId) || 'default', // Novo: ID do cliente
     }
 
     function createStyles(primary) {
@@ -174,6 +175,7 @@
                         message: text,
                         page: location.href,
                         userAgent: navigator.userAgent,
+                        clientId: config.clientId, // Novo: envia ID do cliente
                         ts: Date.now(),
                     }),
                 })
