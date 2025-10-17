@@ -8,20 +8,54 @@
 
     console.log('Loading chat widget from:', baseUrl);
 
-    // Carrega o HTML do widget via iframe ou fetch
-    fetch(baseUrl + '/widget-html')
-        .then(response => response.text())
-        .then(html => {
-            // Cria um container para o widget
-            const container = document.createElement('div');
-            container.id = 'nexr-widget-container';
-            container.innerHTML = html;
-            document.body.appendChild(container);
-            
-            console.log('Chat widget loaded successfully');
-        })
-        .catch(error => {
-            console.error('Error loading chat widget:', error);
-        });
+    // Aguarda o DOM estar pronto
+    function init() {
+        // Carrega o HTML do widget
+        fetch(baseUrl + '/widget-html')
+            .then(response => response.text())
+            .then(html => {
+                // Cria um container temporário para processar o HTML
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                
+                // Extrai apenas o conteúdo do body e script
+                const bodyContent = temp.querySelector('body');
+                if (bodyContent) {
+                    // Adiciona os elementos HTML ao documento
+                    const elements = bodyContent.querySelectorAll(':scope > *:not(script)');
+                    elements.forEach(el => document.body.appendChild(el.cloneNode(true)));
+                    
+                    // Extrai e executa o script
+                    const scripts = bodyContent.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
+                    
+                    // Extrai e adiciona o style do head
+                    const styleContent = temp.querySelector('style');
+                    if (styleContent) {
+                        document.head.appendChild(styleContent.cloneNode(true));
+                    }
+                }
+                
+                console.log('Chat widget loaded successfully');
+            })
+            .catch(error => {
+                console.error('Error loading chat widget:', error);
+            });
+    }
+
+    // Inicializa quando o DOM estiver pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
 })();

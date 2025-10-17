@@ -449,10 +449,15 @@
             }
         }
 
-        // Inicializa o widget quando o DOM está pronto
-        document.addEventListener('DOMContentLoaded', () => {
+        // Inicializa o widget imediatamente ou quando o DOM estiver pronto
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                new ChatWidget();
+            });
+        } else {
+            // DOM já está pronto (caso seja carregado via fetch)
             new ChatWidget();
-        });
+        }
     </script>
 </body>
 </html>
